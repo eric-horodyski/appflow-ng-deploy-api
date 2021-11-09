@@ -8,9 +8,22 @@ import { Deploy } from 'cordova-plugin-ionic';
 })
 export class HomePage implements OnInit {
   async ngOnInit() {
-    const info = await Deploy.getCurrentVersion();
-    console.log('Current Version', info);
-    const update = await Deploy.checkForUpdate();
-    console.log('Is an update available?', update);
+    await this.performAutomaticUpdate();
+  }
+
+  async performAutomaticUpdate() {
+    try {
+      const currentVersion = await Deploy.getCurrentVersion();
+      const resp = await Deploy.sync({ updateMethod: 'auto' }, (percentDone) =>
+        console.log(`Update is ${percentDone}% done!`)
+      );
+      if (!currentVersion || currentVersion.versionId !== resp.versionId) {
+        alert('We updated the app for you!');
+      } else {
+        alert('No update available');
+      }
+    } catch (error) {
+      alert(`Error ${error}`);
+    }
   }
 }
