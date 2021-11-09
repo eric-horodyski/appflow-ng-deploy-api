@@ -1,0 +1,7 @@
+{
+  "name": "appflow-ng-deploy-api",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
